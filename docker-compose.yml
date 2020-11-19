@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  pg:
+    image: "postgres:9.4"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: express_typescript_orm_dev
+    networks: 
+      - web
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - web
+    env_file:
+      - .env
+    depends_on:
+      - pg 
+    
+networks:
+  web:
+    driver: bridge
